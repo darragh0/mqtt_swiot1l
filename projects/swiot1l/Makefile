@@ -1,0 +1,20 @@
+SWIOT1L_MQTT_EXAMPLE = y
+SWIOT1L_STATIC_IP = n
+
+NO_OS_DOMAIN_NAME = swiot1l
+PLATFORM = maxim
+TARGET = max32650
+
+LIBRARIES += lwip mqtt
+TINYIIOD=y
+IIOD=y
+
+include ../../tools/scripts/generic_variables.mk
+include ./src.mk
+include ../../tools/scripts/generic.mk
+
+CFLAGS += -DNO_OS_LWIP_NETWORKING
+CFLAGS += -DIIO_IGNORE_BUFF_OVERRUN_ERR
+CFLAGS += -DNO_OS_LWIP_INIT_ONETIME=1
+CFLAGS += -DDISABLE_SECURE_SOCKET=1
+CFLAGS += -DMXQ_ON_NO_OS
