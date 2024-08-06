@@ -14,9 +14,9 @@ int main() {
 		return ret;
 
 	no_os_uart_stdio(uart_desc);
-	printf("\033[93mStarting MQTT Example Program:\033[0m\r\n\r\n");
+	printf("\e[H\e[2J\e[93mStarting MQTT Example Program:\e[0m\r\n\r\n");
 	ret = swiot1l_mqtt();
-	printf("\r\n\r\n\033[93mExit with code\033[0m -> %d\r\n", ret);
+	printf("\r\n\r\n\e[93mExit with code\e[0m -> %d\r\n", ret);
 
 	return ret;
 }

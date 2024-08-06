@@ -384,7 +384,7 @@ int swiot1l_mqtt() {
 
 		if (!ret) {
 			msg_len = snprintf(val_buff, sizeof(val_buff), "%.03f", ((double)adt75_val / 1000));
-			printf("Temperature Reading: %.03f C\r\n", ((double) adt75_val / 1000));
+			printf("Temperature reading: \e[96m%.03f\e[0m degrees C\r\n\r\n", ((double) adt75_val / 1000));
 		} else {
 			msg_len = snprintf(val_buff, sizeof(val_buff), "Null");
 			printf("No Valid Data - %d\r\n", ret);
@@ -394,17 +394,17 @@ int swiot1l_mqtt() {
 		ret = mqtt_publish(mqtt, "adt75/temperature", &test_msg);
 
 		// Experiment with ADXL355 Reading 
-		printf("\033[92mSingle read:\033[0m\r\n\r\n");
+        printf("Single read (m/s^2):  \t\t");
 		ret = adxl355_get_xyz(adxl355_desc, &x[0], &y[0], &z[0]);
-		memset(val_buff, 0, sizeof(val_buff));
+		memset(val_buff, 0, sizeof(val_buff)); 
 
 		if (ret) {
 			msg_len = snprintf(val_buff, sizeof(val_buff), "Null");
 			printf("Failed to read - %d\r\n", ret);
 		} else {
-			printf("\tx=%d.%09u\r\n", (int)x[0].integer, (abs)(x[0].fractional));
-			printf("\ty=%d.%09u\r\n", (int)y[0].integer, (abs)(y[0].fractional));
-			printf("\tz=%d.%09u\r\n", (int)z[0].integer, (abs)(z[0].fractional));
+			printf("x=\e[96m%d.%05u\t\e[0m", (int)x[0].integer, (abs)(x[0].fractional));
+			printf("y=\e[96m%d.%05u\t\e[0m", (int)y[0].integer, (abs)(y[0].fractional));
+			printf("z=\e[96m%d.%05u\r\n\r\n\e[0m", (int)z[0].integer, (abs)(z[0].fractional));
 			msg_len = snprintf(val_buff, sizeof(val_buff), "%d.%09u, %d.%09u, %d.%09u", (int)x[0].integer, (abs)(x[0].fractional), (int)y[0].integer, (abs)(y[0].fractional), (int)z[0].integer, (abs)(z[0].fractional));
 		}
 
@@ -413,54 +413,48 @@ int swiot1l_mqtt() {
 		if (ret)
 			printf("Failed to read - %d\r\n", ret);
 		else {
-			printf("Number of read entries from the FIFO:   %d\r\n", fifo_entries);
-			printf("Number of read data sets from the FIFO: %d\r\n", fifo_entries / 3);
-            
-            printf("\t============================================================\r\n");
+			printf("Number of read entries from the FIFO   -> \e[96m%d\e[0m\r\n", fifo_entries);
+			printf("Number of read data sets from the FIFO -> \e[96m%d\e[0m\r\n\r\n", fifo_entries / 3);
             
 			for (uint8_t idx = 0; idx < 32; idx++) {
 				if (idx < fifo_entries / 3) {
-					printf("\tx=%d.%09u m/s^2\r\n", (int)x[idx].integer, (abs)(x[idx].fractional));
-					printf("\ty=%d.%09u m/s^2\r\n", (int)y[idx].integer, (abs)(y[idx].fractional));
-					printf("\tz=%d.%09u m/s^2\r\n", (int)z[idx].integer, (abs)(z[idx].fractional));
-					printf("\n\r");
+                    printf("Reading no. \e[93m%2d\e[0m (m/s^2):\t\t", (int) idx);
+					printf("x=\e[96m%d.%05u\t\e[0m", (int) x[idx].integer, (abs) (x[idx].fractional));
+					printf("y=\e[96m%d.%05u\t\e[0m", (int) y[idx].integer, (abs) (y[idx].fractional));
+					printf("z=\e[96m%d.%05u\e[0m\r\n", (int) z[idx].integer, (abs) (z[idx].fractional));
 				}
 			}
 
+            printf("\r\n");
 		}
 
-        printf("\t============================================================\r\n");
 		ret = adxl355_get_sts_reg(adxl355_desc, &status_flags);
 
 		if (ret)
-			printf("Failed to read - %d\n\r", ret);
+			printf("Failed to read - %d\r\n\r\n", ret);
 		else {
-			printf("Activity flag : %d \r\n", (uint8_t)(status_flags.fields.Activity));
-			printf("DATA_RDY flag : %d \r\n", (uint8_t)(status_flags.fields.DATA_RDY));
-			printf("FIFO_FULL flag: %d \r\n", (uint8_t)(status_flags.fields.FIFO_FULL));
-			printf("FIFO_OVR flag : %d \r\n", (uint8_t)(status_flags.fields.FIFO_OVR));
-			printf("NVM_BUSY flag : %d \r\n", (uint8_t)(status_flags.fields.NVM_BUSY));
-            printf("\t============================================================\r\n");
+			printf("Activity flag   -> \e[93m%d\e[0m\r\n", (uint8_t) (status_flags.fields.Activity));
+			printf("DATA_RDY flag   -> \e[93m%d\e[0m\r\n", (uint8_t) (status_flags.fields.DATA_RDY));
+			printf("FIFO_FULL flag  -> \e[93m%d\e[0m\r\n", (uint8_t) (status_flags.fields.FIFO_FULL));
+			printf("FIFO_OVR flag   -> \e[93m%d\e[0m\r\n", (uint8_t) (status_flags.fields.FIFO_OVR));
+			printf("NVM_BUSY flag   -> \e[93m%d\e[0m\r\n\r\n", (uint8_t) (status_flags.fields.NVM_BUSY));
 		}
 
 		ret = adxl355_get_temp(adxl355_desc, &temp);
 		if (ret)
 			printf("Failed to read - %d\r\n", ret);
 		else
-		{
-			printf("Temperature =%d.%09u millidegress Celsius\r\n", (int)temp.integer,
-				(abs)(temp.fractional));
-		}
+			printf("Temperature: \e[93m%d.%09u\e[0m millidegrees C\r\n\r\n", (int) temp.integer, (abs) (temp.fractional));
+	
 		test_msg.len = msg_len;
 		ret = mqtt_publish(mqtt, "adxl355/accel", &test_msg);
 
 		no_os_mdelay(5000);
+        printf("\e[H\e[2J");
 	}
-	
 
-	while(1) {
+	while(1)
 		no_os_lwip_step(tcp_socket->net->net, NULL);
-	}
 
     return 0;
 
