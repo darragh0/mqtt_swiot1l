@@ -12,7 +12,7 @@
 
 ifeq '$(LOCAL_BUILD)' 'y'
 
-include ..\..\tools\scripts\local_variables.mk
+include ..\..\..\tools\scripts\local_variables.mk
 
 endif
 

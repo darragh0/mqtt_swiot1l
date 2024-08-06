@@ -9,9 +9,9 @@ LIBRARIES += lwip mqtt
 TINYIIOD=y
 IIOD=y
 
-include ./generic_variables.mk
-include ./src.mk
-include ./generic.mk
+include ./mk/generic_variables.mk
+include ./mk/src.mk
+include ./mk/generic.mk
 
 CFLAGS += -DNO_OS_LWIP_NETWORKING
 CFLAGS += -DIIO_IGNORE_BUFF_OVERRUN_ERR
