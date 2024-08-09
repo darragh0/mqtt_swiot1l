@@ -15,12 +15,12 @@
 #include "no_os_timer.h"
 #include "no_os_util.h"
 
-// mbedtls
-#include "mbedtls/net_sockets.h"
-#include "mbedtls/ssl.h"
-#include "mbedtls/entropy.h"
-#include "mbedtls/ctr_drbg.h"
-#include "mbedtls/debug.h"
+// // mbedtls
+// #include "mbedtls/net_sockets.h"
+// #include "mbedtls/ssl.h"
+// #include "mbedtls/entropy.h"
+// #include "mbedtls/ctr_drbg.h"
+// #include "mbedtls/debug.h"
 
 #include <errno.h>
 #include <malloc.h>

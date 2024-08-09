@@ -82,7 +82,8 @@ SRCS += $(DRIVERS)/digital-io/max149x6/max149x6-base.c	                         
 INCS += $(PROJECT)/src/platform/parameters.h                                                \
 		$(PROJECT)/src/common/common_data.h                                                 \
 		$(PROJECT)/src/swiot1l_mqtt.h                                                       \
-		$(PROJECT)/src/common/swiot.h
+		$(PROJECT)/src/common/swiot.h                                                       \
+		$(PROJECT)/src/mbedtls_config.h
  
 SRCS += $(PROJECT)/src/platform/parameters.c                                                \
 		$(PROJECT)/src/platform/main.c                                                      \

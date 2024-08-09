@@ -5,6 +5,8 @@ NO_OS_DOMAIN_NAME = swiot1l
 PLATFORM = maxim
 TARGET = max32650
 
+MBED_TLS_CONFIG_FILE = $(PROJECT)/src/noos_mbedtls_config.h
+
 LIBRARIES += lwip mqtt mbedtls
 TINYIIOD=y
 IIOD=y
