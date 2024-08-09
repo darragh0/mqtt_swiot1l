@@ -15,6 +15,13 @@
 #include "no_os_timer.h"
 #include "no_os_util.h"
 
+// mbedtls
+#include "mbedtls/net_sockets.h"
+#include "mbedtls/ssl.h"
+#include "mbedtls/entropy.h"
+#include "mbedtls/ctr_drbg.h"
+#include "mbedtls/debug.h"
+
 #include <errno.h>
 #include <malloc.h>
 #include <stdio.h>
@@ -26,6 +33,7 @@ static void message_handler(struct mqtt_message_data *msg) {
     printf("Topic:%s -- Payload: %s\n", msg->topic, msg->message.payload);
 }
 
+// Ignore the length of this function...
 int swiot1l_mqtt() {
 	
     uint8_t adin1110_mac_address[6] = {0x00, 0x18, 0x80, 0x03, 0x25, 0x60};
@@ -38,7 +46,7 @@ int swiot1l_mqtt() {
     int ret;
 
     struct ad74413r_desc *ad74413r;
-    struct adxl355_dev *adxl355_desc;
+    struct adxl355_dev *adxl355_desc
     struct adt75_desc *adt75;
 
     struct lwip_network_param lwip_ip = {
@@ -116,7 +124,7 @@ int swiot1l_mqtt() {
     no_os_gpio_direction_output(adin1110_cfg0_gpio, 1);
     no_os_gpio_direction_output(swiot_led1_gpio, 1);
     no_os_gpio_direction_output(swiot_led2_gpio, 1);
-    no_os_gpio_direction_input(adin1110_int_gpio);
+    no_os_gpio_direction_input(adin1110_int_gpio)
     no_os_gpio_direction_input(ad74413r_irq_gpio);
 
     const mxc_gpio_cfg_t gpio_cfg = {MXC_GPIO1, (MXC_GPIO_PIN_24), MXC_GPIO_FUNC_OUT,
@@ -151,16 +159,19 @@ int swiot1l_mqtt() {
         printf("Failed to initialise ADXL355 - %d\r\n", ret);
         return ret;
     }
+
     ret = adxl355_soft_reset(adxl355_desc);
     if (ret) {
         printf("Failed to soft reset ADXL355 - %d\r\n", ret);
         return ret;
     }
+
     ret = adxl355_set_odr_lpf(adxl355_desc, ADXL355_ODR_3_906HZ);
     if (ret) {
         printf("Failed to initialise ADXL355 filter - %d\r\n", ret);
         return ret;
     }
+
     ret = adxl355_set_op_mode(adxl355_desc, ADXL355_MEAS_TEMP_ON_DRDY_OFF);
     if (ret) {
         printf("Failed to set mode ADXL355 - %d\r\n", ret);

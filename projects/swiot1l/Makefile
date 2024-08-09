@@ -5,7 +5,7 @@ NO_OS_DOMAIN_NAME = swiot1l
 PLATFORM = maxim
 TARGET = max32650
 
-LIBRARIES += lwip mqtt
+LIBRARIES += lwip mqtt mbedtls
 TINYIIOD=y
 IIOD=y
 

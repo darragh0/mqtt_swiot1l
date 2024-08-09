@@ -1,8 +1,3 @@
-
-LIBRARIES += lwip mqtt
-TINYIIOD=y
-IIOD=y
-
 INCS += $(PLATFORM_DRIVERS)/maxim_gpio.h                                                    \
         $(PLATFORM_DRIVERS)/maxim_spi.h                                                     \
         $(PLATFORM_DRIVERS)/maxim_gpio_irq.h                                                \
@@ -101,7 +96,7 @@ INCS += $(NO-OS)/network/tcp_socket.h                                           
 		$(NO-OS)/network/lwip_raw_socket/netdevs/adin1110/lwip_adin1110.h                   \
 
 INCS += $(PLATFORM_DRIVERS)/maxim_gpio.h                                                    \
-		$(NO-OS)/iio/iio_trigger.h														\
+		$(NO-OS)/iio/iio_trigger.h														    \
 
 SRCS += $(NO-OS)/network/tcp_socket.c                                                       \
 		$(NO-OS)/network/lwip_raw_socket/netdevs/adin1110/lwip_adin1110.c                   \

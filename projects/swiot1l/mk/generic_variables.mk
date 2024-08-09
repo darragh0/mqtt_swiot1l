@@ -16,7 +16,7 @@ include ..\..\..\tools\scripts\local_variables.mk
 
 endif
 
-#Variables needed by makefile
+# Variables needed by makefile
 PROJECT			?= $(realpath .)
 NO-OS			?= $(realpath $(PROJECT)/../../)
 ROOT_DRIVE		?= $(firstword $(subst /, ,$(PROJECT)))/
