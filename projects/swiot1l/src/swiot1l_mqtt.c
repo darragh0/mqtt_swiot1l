@@ -46,7 +46,7 @@ int swiot1l_mqtt() {
     int ret;
 
     struct ad74413r_desc *ad74413r;
-    struct adxl355_dev *adxl355_desc
+    struct adxl355_dev *adxl355_desc;
     struct adt75_desc *adt75;
 
     struct lwip_network_param lwip_ip = {
@@ -124,7 +124,7 @@ int swiot1l_mqtt() {
     no_os_gpio_direction_output(adin1110_cfg0_gpio, 1);
     no_os_gpio_direction_output(swiot_led1_gpio, 1);
     no_os_gpio_direction_output(swiot_led2_gpio, 1);
-    no_os_gpio_direction_input(adin1110_int_gpio)
+    no_os_gpio_direction_input(adin1110_int_gpio);
     no_os_gpio_direction_input(ad74413r_irq_gpio);
 
     const mxc_gpio_cfg_t gpio_cfg = {MXC_GPIO1, (MXC_GPIO_PIN_24), MXC_GPIO_FUNC_OUT,
