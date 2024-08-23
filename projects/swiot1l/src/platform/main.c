@@ -17,6 +17,7 @@ int main() {
 	// Redirect stdio
 	no_os_uart_stdio(uart_desc);
 
+	// Escape codes clear screen
 	printf("\e[H\e[2J\e[93mStarting MQTT Example Program:\e[0m\r\n\r\n");
 	ret = swiot1l_mqtt();
 	printf("\r\n\r\n\e[93mExit with code\e[0m -> %d\r\n", ret);

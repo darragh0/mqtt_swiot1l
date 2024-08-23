@@ -15,13 +15,6 @@
 #include "no_os_timer.h"
 #include "no_os_util.h"
 
-// // mbedtls
-// #include "mbedtls/net_sockets.h"
-// #include "mbedtls/ssl.h"
-// #include "mbedtls/entropy.h"
-// #include "mbedtls/ctr_drbg.h"
-// #include "mbedtls/debug.h"
-
 #include <errno.h>
 #include <malloc.h>
 #include <stdio.h>
@@ -33,14 +26,14 @@ static void message_handler(struct mqtt_message_data *msg) {
     printf("Topic:%s -- Payload: %s\n", msg->topic, msg->message.payload);
 }
 
-// Ignore the length of this function...
+
 int swiot1l_mqtt() {
 	
     uint8_t adin1110_mac_address[6] = {0x00, 0x18, 0x80, 0x03, 0x25, 0x60};
-    uint8_t send_buff[1000];  // FIXME:
-    uint8_t read_buff[1000];  // FIXME:
+    uint8_t send_buff[1000];  
+    uint8_t read_buff[1000];  
     struct ad74413r_decimal val;
-    char val_buff[50];  // FIXME:
+    char val_buff[50];  
     uint32_t msg_len;
     uint32_t adt75_val;
     int ret;
@@ -91,7 +84,7 @@ int swiot1l_mqtt() {
     struct no_os_gpio_desc *adin1110_int_gpio;
     struct no_os_gpio_desc *swiot_led1_gpio;
     struct no_os_gpio_desc *swiot_led2_gpio;
-
+    
     no_os_gpio_get(&swiot_led1_gpio, &swiot_led1_ip);
     no_os_gpio_get(&swiot_led2_gpio, &swiot_led2_ip);
     no_os_gpio_get(&max14906_d1_gpio, &max14906_d1_ip);
@@ -127,8 +120,15 @@ int swiot1l_mqtt() {
     no_os_gpio_direction_input(adin1110_int_gpio);
     no_os_gpio_direction_input(ad74413r_irq_gpio);
 
-    const mxc_gpio_cfg_t gpio_cfg = {MXC_GPIO1, (MXC_GPIO_PIN_24), MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_3};
+    const mxc_gpio_cfg_t gpio_cfg = {
+        MXC_GPIO1,
+        MXC_GPIO_PIN_24,
+        MXC_GPIO_FUNC_OUT,
+        MXC_GPIO_PAD_NONE,
+        MXC_GPIO_VSSEL_VDDIOH,
+        MXC_GPIO_DRVSTR_3
+    };
+
     MXC_GPIO_Init(1);
     MXC_GPIO_Config(&gpio_cfg);
 
@@ -229,7 +229,7 @@ int swiot1l_mqtt() {
 
     /* The default settings are 192.168.97.1:1883 */
     struct socket_address ip_addr = {
-        .addr = "192.168.0.191", 
+        .addr = "192.168.0.191",
         .port = 1883
     };
 
@@ -256,9 +256,9 @@ int swiot1l_mqtt() {
     struct mqtt_connect_config conn_config = {
         .version = MQTT_VERSION_3_1_1,
         .keep_alive_ms = 72000, // 1000
-        .client_name = (int8_t *)"swiot_10685237",
-        .username = "mod_sense",
-        .password = "WaterFabProj"
+        .client_name = (int8_t *) "Joe the AD-SWIOT1L-SL :3",
+        .username = "usr",
+        .password = "pw"
     };
 
     ret = socket_connect(tcp_socket, &ip_addr);
@@ -291,76 +291,6 @@ int swiot1l_mqtt() {
     };
 
     printf("Starting MQTT Publish Loop\r\n");
-
-    // while (1) {
-    //     no_os_lwip_step(tcp_socket->net->net, NULL);
-
-    //     ad74413r_adc_get_value(ad74413r, 2, &val);
-    //     memset(val_buff, 0, sizeof(val_buff));
-
-    //     if (val.integer == 0 && val.decimal < 0)
-    //         msg_len = snprintf(val_buff, sizeof(val_buff), "-%lld mV", val.integer,
-    //                            abs(val.decimal));
-    //     else
-    //         msg_len = snprintf(val_buff, sizeof(val_buff), "%lld mV", val.integer,
-    //                            abs(val.decimal));
-    //     test_msg.len = msg_len;
-    //     ret = mqtt_publish(mqtt, "ad74413r/channel0", &test_msg);
-    //     if (ret) {
-    //         pr_err("Error publishing MQTT message: %d (%s)\r\n", ret, strerror(-ret));
-    //         goto free_mqtt;
-    //     }
-
-    //     ad74413r_adc_get_value(ad74413r, 1, &val);
-    //     memset(val_buff, 0, sizeof(val_buff));
-    //     if (val.integer == 0 && val.decimal < 0)
-    //         msg_len = snprintf(val_buff, sizeof(val_buff), "-%lld mV",
-    //                            val.integer / 1000,
-    //                            abs(val.decimal));
-    //     else
-    //         msg_len = snprintf(val_buff, sizeof(val_buff), "%lld mV", val.integer,
-    //                            abs(val.decimal));
-    //     test_msg.len = msg_len;
-    //     ret = mqtt_publish(mqtt, "ad74413r/channel1", &test_msg);
-    //     if (ret) {
-    //         pr_err("Error publishing MQTT message: %d (%s)\r\n", ret, strerror(-ret));
-    //         goto free_mqtt;
-    //     }
-
-    //     ad74413r_adc_get_value(ad74413r, 2, &val);
-    //     memset(val_buff, 0, sizeof(val_buff));
-    //     msg_len = snprintf(val_buff, sizeof(val_buff), "%lld Ω",
-    //                        val.integer / 1000,
-    //                        abs(val.decimal));
-    //     test_msg.len = msg_len;
-    //     ret = mqtt_publish(mqtt, "ad74413r/channel2", &test_msg);
-    //     if (ret) {
-    //         pr_err("Error publishing MQTT message: %d (%s)\r\n", ret, strerror(-ret));
-    //         goto free_mqtt;
-    //     }
-
-    //     ad74413r_adc_get_value(ad74413r, 3, &val);
-    //     memset(val_buff, 0, sizeof(val_buff));
-
-    //     if (val.integer == 0 && val.decimal < 0)
-    //         msg_len = snprintf(val_buff, sizeof(val_buff),
-    //                            "-%lld"
-    //                            ".%02lu mA",
-    //                            val.integer,
-    //                            abs(val.decimal / 1000000));
-    //     else
-    //         msg_len = snprintf(val_buff, sizeof(val_buff),
-    //                            "%lld"
-    //                            ".%02lu mA",
-    //                            val.integer,
-    //                            abs(val.decimal / 1000000));
-    //     test_msg.len = msg_len;
-    //     ret = mqtt_publish(mqtt, "ad74413r/channel3", &test_msg);
-    //     if (ret) {
-    //     }
-
-    //     no_os_mdelay(1000);
-    // }
 
 	while (1) {
 		no_os_lwip_step(tcp_socket->net->net, NULL);
